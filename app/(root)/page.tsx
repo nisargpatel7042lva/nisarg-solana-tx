@@ -88,7 +88,7 @@ export default function HomePage() {
                         variant="outline"
                         onClick={handleClick}
                     >
-                        make a transaction
+                        Make A Transaction
                     </Button>
                 ) : (
                     "connect your wallet to make a transaction"
