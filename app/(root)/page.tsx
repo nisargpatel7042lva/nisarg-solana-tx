@@ -49,27 +49,36 @@ export default function HomePage() {
                 })
             );
 
+            // Get recent blockhash before sending transaction
+            const { blockhash } = await connection.getLatestBlockhash();
+            transaction.recentBlockhash = blockhash;
+            transaction.feePayer = publicKey;
 
             const signature = await sendTransaction(transaction, connection);
             console.log("Transaction sent with signature:", signature);
 
-            // Wait for confirmation
-            const latestBlockhash = await connection.getLatestBlockhash();
-            const confirmation = await connection.confirmTransaction({
-                signature,
-                blockhash: latestBlockhash.blockhash,
-                lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
-            });
+            try {
+                const latestBlockhash = await connection.getLatestBlockhash();
+                const confirmation = await connection.confirmTransaction({
+                    signature,
+                    blockhash: latestBlockhash.blockhash,
+                    lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+                });
 
-            if (confirmation.value.err) {
-                throw new Error("Transaction failed to confirm: " + confirmation.value.err.toString());
+                if (confirmation.value.err) {
+                    throw new Error("Transaction failed to confirm: " + confirmation.value.err.toString());
+                }
+
+                console.log("Transaction confirmed:", confirmation);
+                return confirmation;
+            } catch (confirmError) {
+                console.error("Confirmation error:", confirmError);
+                throw new Error("Failed to confirm transaction: " + confirmError.message);
             }
-
-            console.log("Transaction confirmed:", confirmation);
-
-            return confirmation
-        } catch (error) {
-            console.error("Error:", error);
+        } catch (error: any) {
+            console.error("Transaction error:", error);
+            // Re-throw the error to be handled by the component's error boundary
+            throw error;
         }
     }
 
