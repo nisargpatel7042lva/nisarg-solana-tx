@@ -75,10 +75,14 @@ export default function HomePage() {
                 console.error("Confirmation error:", confirmError);
                 throw new Error("Failed to confirm transaction: " + confirmError.message);
             }
-        } catch (error: any) {
-            console.error("Transaction error:", error);
-            // Re-throw the error to be handled by the component's error boundary
-            throw error;
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                console.error("Transaction error:", error);
+                throw error;
+            } else {
+                console.error("Transaction error:", error);
+                throw new Error("An unknown error occurred");
+            }
         }
     }
 
