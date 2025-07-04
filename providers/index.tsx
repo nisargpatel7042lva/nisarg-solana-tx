@@ -20,6 +20,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                         id: "Backpack",
                         name: "Backpack" as WalletName<"Backpack">,
                         url: "https://www.backpack.app/",
+                        icon: "https://www.backpack.app/favicon.ico",
                     },
                 ],
                 walletPrecedence: ["Backpack"],
