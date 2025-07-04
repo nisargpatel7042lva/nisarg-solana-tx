@@ -23,7 +23,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                         icon: "https://www.backpack.app/favicon.ico",
                     },
                 ],
-                walletPrecedence: ["Backpack"],
+                walletPrecedence: ["Backpack" as WalletName<"Backpack">],
                 walletlistExplanation: {
                     href: "https://station.jup.ag/docs/additional-topics/wallet-list",
                 },
