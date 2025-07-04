@@ -71,9 +71,13 @@ export default function HomePage() {
 
                 console.log("Transaction confirmed:", confirmation);
                 return confirmation;
-            } catch (confirmError) {
+            } catch (confirmError: unknown) {
                 console.error("Confirmation error:", confirmError);
-                throw new Error("Failed to confirm transaction: " + confirmError.message);
+                if (confirmError instanceof Error) {
+                    throw new Error("Failed to confirm transaction: " + confirmError.message);
+                } else {
+                    throw new Error("Failed to confirm transaction: Unknown error");
+                }
             }
         } catch (error: unknown) {
             if (error instanceof Error) {
